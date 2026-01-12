@@ -13,7 +13,7 @@ import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-// TODO: CRIO_TASK_MODULE_SERIALIZATION - Pass tests in RestaurantTest.
+
 class RestaurantTest {
 
   @Test
@@ -41,6 +41,7 @@ class RestaurantTest {
     System.out.print(restaurant);
 
     // Deserialize the Json string from Restaurant class to ensure its done cleanly.
+
     String actualJsonString = "";
     actualJsonString = new ObjectMapper().writeValueAsString(restaurant);
     JSONAssert.assertEquals(jsonString, actualJsonString, true);
