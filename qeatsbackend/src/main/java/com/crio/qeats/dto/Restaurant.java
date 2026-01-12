@@ -33,7 +33,19 @@ import lombok.NoArgsConstructor;
 //  ]
 // }
 
-public class Restaurant {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 
+public class Restaurant {
+    private String restaurantId;
+    private String name;
+    private String city;
+    private String imageUrl;
+    private float latitude;
+    private float longitude;
+    private String opensAt;
+    private String closesAt;
+    private List<String> attributes;
 }
 

@@ -38,6 +38,7 @@ class RestaurantTest {
     // object can deserialize the right restaurant json.
     Restaurant restaurant = new Restaurant();
     restaurant = new ObjectMapper().readValue(jsonString, Restaurant.class);
+    System.out.print(restaurant);
 
     // Deserialize the Json string from Restaurant class to ensure its done cleanly.
     String actualJsonString = "";
