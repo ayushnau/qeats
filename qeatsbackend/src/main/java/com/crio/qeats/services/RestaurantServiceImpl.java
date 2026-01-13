@@ -30,23 +30,15 @@ public class RestaurantServiceImpl implements RestaurantService {
   public GetRestaurantsResponse findAllRestaurantsCloseBy(
       GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime) {
 
-    if (getRestaurantsRequest == null || getRestaurantsRequest.getLatitude() == null
+    if (getRestaurantsRequest == null
+        || getRestaurantsRequest.getLatitude() == null
         || getRestaurantsRequest.getLongitude() == null) {
-      return new GetRestaurantsResponse(); // return empty response if invalid request
+      return new GetRestaurantsResponse();
     }
 
-    // Determine radius based on peak hours
-    Double servingRadius;
-    int hour = currentTime.getHour();
-    int minute = currentTime.getMinute();
-    boolean isPeak = 
-        (hour >= 8 && hour < 10) ||       // 8AM-10AM
-        (hour == 13) ||                   // 1PM-2PM
-        (hour >= 19 && hour < 21);        // 7PM-9PM
+    Double servingRadius =
+        isPeakHour(currentTime) ? peakHoursServingRadiusInKms : normalHoursServingRadiusInKms;
 
-    servingRadius = isPeak ? peakHoursServingRadiusInKms : normalHoursServingRadiusInKms;
-
-    // Call repository to get restaurants within radius and filter by current time
     List<Restaurant> restaurants = restaurantRepositoryService
         .findAllRestaurantsCloseBy(
             getRestaurantsRequest.getLatitude(),
@@ -56,5 +48,12 @@ public class RestaurantServiceImpl implements RestaurantService {
         );
 
     return new GetRestaurantsResponse(restaurants);
+  }
+
+  private boolean isPeakHour(LocalTime time) {
+    return
+        (!time.isBefore(LocalTime.of(8, 0)) && !time.isAfter(LocalTime.of(10, 0)))
+     || (!time.isBefore(LocalTime.of(13, 0)) && !time.isAfter(LocalTime.of(14, 0)))
+     || (!time.isBefore(LocalTime.of(19, 0)) && !time.isAfter(LocalTime.of(21, 0)));
   }
 }
