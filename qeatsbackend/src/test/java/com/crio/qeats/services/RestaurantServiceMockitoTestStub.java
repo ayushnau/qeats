@@ -26,6 +26,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 @ExtendWith(MockitoExtension.class)
 public class RestaurantServiceMockitoTestStub {
@@ -40,8 +41,10 @@ public class RestaurantServiceMockitoTestStub {
   protected Restaurant restaurant4;
   protected Restaurant restaurant5;
 
+  @InjectMocks
   protected RestaurantServiceImpl restaurantService;
 
+  @Mock
   protected RestaurantRepositoryService restaurantRepositoryServiceMock;
 
   public void initializeRestaurantObjects() throws IOException {
@@ -52,7 +55,18 @@ public class RestaurantServiceMockitoTestStub {
     //  What to do with this Restaurant[] ? Looks unused?
     //  Look for the "assert" statements in the tests
     //  following and find out what to do with the array.
+    restaurant1 = restaurants[0];
+    restaurant2 = restaurants[1];
+    restaurant3 = restaurants[2];
+    restaurant4 = restaurants[3];
+    restaurant5 = restaurants[4];
+    
   }
+  @BeforeEach
+  public void setUp() throws IOException {
+    initializeRestaurantObjects();
+  }
+
 
 
 
@@ -67,10 +81,10 @@ public class RestaurantServiceMockitoTestStub {
      when(restaurantRepositoryServiceMock
             .findAllRestaurantsCloseBy(any(Double.class), any(Double.class),
                 eq(LocalTime.of(3, 0)),
-                eq(1.0)))
+                eq(5.0)))
             .thenReturn(Arrays.asList(restaurant1, restaurant2));
     GetRestaurantsResponse allRestaurantsCloseBy = restaurantService
-        .findAllRestaurantsCloseBy(new GetRestaurantsRequest(20.0, 30.0),
+        .findAllRestaurantsCloseBy(new GetRestaurantsRequest(20.0d, 30.0d),
             LocalTime.of(3, 0));
 
     assertEquals(2, allRestaurantsCloseBy.getRestaurants().size());
@@ -81,15 +95,15 @@ public class RestaurantServiceMockitoTestStub {
     verify(restaurantRepositoryServiceMock, times(1))
         .findAllRestaurantsCloseBy(any(Double.class), any(Double.class), any(LocalTime.class),
             servingRadiusInKms.capture());
-
+      
   }
 
 
   @Test
   public void  testFindNearbyWithin3km() throws IOException {
-
-    List<Restaurant> restaurantList1 = null;
-    List<Restaurant> restaurantList2 = null;
+    List<Restaurant> restaurantList1 = Arrays.asList(restaurant1, restaurant4);
+    List<Restaurant> restaurantList2 = Arrays.asList(restaurant2, restaurant4);
+    
 
     // TODO: CRIO_TASK_MODULE_MOCKITO
     //  Initialize these two lists above such that I will match with the assert statements
@@ -106,8 +120,16 @@ public class RestaurantServiceMockitoTestStub {
         .findAllRestaurantsCloseBy(eq(21.0), eq(31.1), eq(LocalTime.of(19, 0)),
             eq(3.0));
 
-    GetRestaurantsResponse allRestaurantsCloseByOffPeakHours;
-    GetRestaurantsResponse allRestaurantsCloseByPeakHours;
+        GetRestaurantsResponse allRestaurantsCloseByOffPeakHours =
+            restaurantService.findAllRestaurantsCloseBy(
+                new GetRestaurantsRequest(20.0, 30.2),
+                LocalTime.of(3, 0));
+        
+        GetRestaurantsResponse allRestaurantsCloseByPeakHours =
+            restaurantService.findAllRestaurantsCloseBy(
+                new GetRestaurantsRequest(21.0, 31.1),
+                LocalTime.of(19, 0));
+        
 
     // TODO: CRIO_TASK_MODULE_MOCKITO
     //  Call restaurantService.findAllRestaurantsCloseBy with appropriate parameters such that
