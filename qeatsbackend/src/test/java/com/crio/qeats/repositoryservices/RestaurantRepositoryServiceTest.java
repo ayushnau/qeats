@@ -31,6 +31,7 @@ import javax.inject.Provider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.matchers.GreaterThan;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,14 +61,14 @@ public class RestaurantRepositoryServiceTest {
   @Autowired
   private Provider<ModelMapper> modelMapperProvider;
 
-  @MockBean
-  private RestaurantRepository restaurantRepository;
+  // @MockBean
+  // private RestaurantRepository restaurantRepository;
 
 
-  @Value("${spring.redis.port}")
-  private int redisPort;
+  // @Value("${spring.redis.port}")
+  // private int redisPort;
 
-  private RedisServer server = null;
+  // private RedisServer server = null;
 
 
 
@@ -77,7 +78,7 @@ public class RestaurantRepositoryServiceTest {
     for (RestaurantEntity restaurantEntity : allRestaurants) {
       mongoTemplate.save(restaurantEntity, "restaurants");
     }
-    when(restaurantRepository.findAll()).thenReturn(allRestaurants);
+    // when(restaurantRepository.findAll()).thenReturn(allRestaurants);
   }
 
   @AfterEach
@@ -93,6 +94,7 @@ public class RestaurantRepositoryServiceTest {
 
     List<Restaurant> allRestaurantsCloseBy = restaurantRepositoryService
         .findAllRestaurantsCloseBy(20.0, 30.0, LocalTime.of(18, 1), 3.0);
+
 
     // verify(restaurantRepository, times(1)).findAll();
     assertEquals(2, allRestaurantsCloseBy.size());
