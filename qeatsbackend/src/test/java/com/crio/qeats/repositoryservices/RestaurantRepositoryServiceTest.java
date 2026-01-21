@@ -61,8 +61,8 @@ public class RestaurantRepositoryServiceTest {
   @Autowired
   private Provider<ModelMapper> modelMapperProvider;
 
-  // @MockBean
-  // private RestaurantRepository restaurantRepository;
+  @MockBean
+  private RestaurantRepository restaurantRepository;
 
 
   // @Value("${spring.redis.port}")
@@ -78,7 +78,7 @@ public class RestaurantRepositoryServiceTest {
     for (RestaurantEntity restaurantEntity : allRestaurants) {
       mongoTemplate.save(restaurantEntity, "restaurants");
     }
-    // when(restaurantRepository.findAll()).thenReturn(allRestaurants);
+    when(restaurantRepository.findAll()).thenReturn(allRestaurants);
   }
 
   @AfterEach
@@ -90,13 +90,13 @@ public class RestaurantRepositoryServiceTest {
   void restaurantsCloseByAndOpenNow() {
     assertNotNull(restaurantRepositoryService);
 
-    // when(restaurantRepository.findAll()).thenReturn(allRestaurants);
+    when(restaurantRepository.findAll()).thenReturn(allRestaurants);
 
     List<Restaurant> allRestaurantsCloseBy = restaurantRepositoryService
         .findAllRestaurantsCloseBy(20.0, 30.0, LocalTime.of(18, 1), 3.0);
 
 
-    // verify(restaurantRepository, times(1)).findAll();
+    verify(restaurantRepository, times(1)).findAll();
     assertEquals(2, allRestaurantsCloseBy.size());
     assertEquals("11", allRestaurantsCloseBy.get(0).getRestaurantId());
     assertEquals("12", allRestaurantsCloseBy.get(1).getRestaurantId());
