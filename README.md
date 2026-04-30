@@ -79,7 +79,6 @@ GET /qeats/v1/restaurants?latitude=X&longitude=Y
 - **Jackson 2.9.8** — JSON serialization/deserialization
 - **Swagger (Springfox 2.9.2)** — API documentation and try-it-out UI
 - **Log4j2 2.16.0** — structured logging to file
-- **Guava 20.0** — Google's utility library
 - **GeoHash 1.3.0** — geographic hashing for location-based operations
 
 ### Key Algorithms
@@ -91,18 +90,13 @@ GET /qeats/v1/restaurants?latitude=X&longitude=Y
 
 - **JUnit 5 (5.3.1)** — unit testing framework
 - **Mockito 2.22.0** — mocking dependencies in unit tests
-- **Embedded MongoDB (Flapdoodle)** — integration testing without external MongoDB
-- **Embedded Redis** — integration testing without external Redis
 
 ### Code Quality
 
 - **Checkstyle 7.8.1** — code style enforcement
 - **PMD 6.10.0** — static code analysis
-- **SpotBugs 4.5.0** — bug pattern detection
-- **JaCoCo 0.8.5** — code coverage reporting
 
 ### Build Tool
 
 - **Gradle** — build automation and dependency management
 
-The app runs on **port 8081**.
